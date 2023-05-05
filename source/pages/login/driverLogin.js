@@ -12,13 +12,13 @@ import {
 import { theme } from "core";
 import { emailValidator, passwordValidator } from "utils";
 import { AuthenticationContext } from "routes/authentication-context";
-import { useLoginUserMutation } from "api/mutations";
+import { useLoginDrivernMutation } from "api/mutations/authentication/login-driver-mutation";
 
-export const Login = ({ navigation }) => {
+export const DriverLogin = ({ navigation }) => {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
-
-  const { mutate: LoginUser, data: loggedin } = useLoginUserMutation();
+  const [userType, setUserType] = useState("admin");
+  const { mutate: LoginUser, data: loggedin } = useLoginDrivernMutation();
 
   const { signIn } = useContext(AuthenticationContext);
 
@@ -35,7 +35,7 @@ export const Login = ({ navigation }) => {
       navigation.navigate("Home", { loggedInId: loggedin.userId });
     }
   }, [loggedin]);
-  console.log("loggedin", loggedin);
+
   const Auth = async () => {
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
@@ -45,9 +45,10 @@ export const Login = ({ navigation }) => {
       return;
     }
     const user = {
-      studentEmail: email.value,
-      studentPassword: password.value,
+      adminEmail: email.value,
+      adminPassword: password.value,
     };
+    setUserType({ value: "driver", error: "" });
     LoginUser(user);
   };
 
@@ -57,7 +58,7 @@ export const Login = ({ navigation }) => {
       <Logo mode="Login" />
       <Header>Welcome Back!</Header>
       <TextInput
-        label="Email"
+        label="Driver Email"
         returnKeyType="next"
         value={email.value}
         onChangeText={(text) => setEmail({ value: text, error: "" })}
@@ -69,7 +70,7 @@ export const Login = ({ navigation }) => {
         keyboardType="email-address"
       />
       <TextInput
-        label="Password"
+        label="Driver Password"
         returnKeyType="done"
         value={password.value}
         onChangeText={(text) => setPassword({ value: text, error: "" })}
@@ -85,12 +86,6 @@ export const Login = ({ navigation }) => {
       <Button mode="contained" onPress={Auth}>
         Login
       </Button>
-      <View style={styles.row}>
-        <Text>Don’t have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.replace("IDScanner")}>
-          <Text style={styles.link}>Register</Text>
-        </TouchableOpacity>
-      </View>
     </Background>
   );
 };
@@ -108,10 +103,5 @@ const styles = StyleSheet.create({
   forgot: {
     fontSize: 12,
     color: theme.colors.secondary,
-  },
-
-  link: {
-    fontWeight: "bold",
-    color: "#43bddd",
   },
 });

@@ -4,10 +4,11 @@ import React from "react";
 export const AuthenticationContext = React.createContext({
   token: null,
   userId: null,
-  // firstName: null,
-  // lastName: null,
+  userType: null,
   fullName: null,
+
   setAuthentication: () => {},
   signIn: () => {},
   signOut: () => {},
 });
+console.log(AuthenticationContext);

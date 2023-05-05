@@ -3,27 +3,23 @@ import { useContext } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { AuthenticationContext } from "routes/authentication-context";
 
-const createUser = async (data) => {
+const LoginAdmin = async (data) => {
   return await client
-    .post("/authentication/register", data)
+    .post("/authentication/adminLogin", data)
     .then((res) => res.data);
 };
 
-export const useCreateUserMutation = () => {
+export const useLoginAdminMutation = () => {
   const queryClient = useQueryClient();
   const { userId } = useContext(AuthenticationContext);
-  console.log(userId);
   return useMutation({
-    mutationFn: createUser,
+    mutationFn: LoginAdmin,
     onSuccess: (data) => {
-      console.log("data", data);
-      queryClient.refetchQueries(["student", { ID: userId }]);
+      console.log(data);
+      queryClient.refetchQueries(["admin", { ID: userId }]);
     },
     onError: (error) => {
-      console.log("error", error);
-    },
-    onMutate: (variables) => {
-      console.log(variables);
+      console.log(error);
     },
   });
 };
