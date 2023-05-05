@@ -17,7 +17,7 @@ import { idValidator } from "utils";
 export const IDScanner = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [text, setText] = useState("Not yet scanned");
+  const [text, setText] = useState("No Scanned ID yet.");
 
   const onValidBarcode = () => {
     setScanned(false);

@@ -8,10 +8,13 @@ const LoginUser = async (data) => {
     .post("/authentication/login", data)
     .then((res) => res.data);
 };
-
+console.log(`context ${AuthenticationContext}`);
 export const useLoginUserMutation = () => {
   const queryClient = useQueryClient();
   const { userId } = useContext(AuthenticationContext);
+  console.log(`userid: ${userId}`);
+  // console.log(`fullName: ${fullName}`);
+  // console.log(`userType: ${userType}`);
   return useMutation({
     mutationFn: LoginUser,
     onSuccess: (data) => {

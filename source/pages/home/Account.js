@@ -19,9 +19,21 @@ import { useStopRequestsQuery, useUserPhotoQuery } from "api/queries";
 import UserAvatar from "react-native-user-avatar";
 
 export const Account = ({ navigation }) => {
-  const { userId, signOut, fullName, userType } = useContext(
+  const { userId, fullName, userType, signOut } = useContext(
     AuthenticationContext
   );
+  let imgsrc;
+  if (userType === "student") {
+    imgsrc = require("../../assets/user4.png");
+  } else if (userType === "admin") {
+    imgsrc = require("../../assets/user5.png");
+  } else if (userType === "driver") {
+    imgsrc = require("../../assets/user1.png");
+  }
+  console.log(`userId from refetch ${userId}`);
+  console.log(`userType from refetch: ${userType}`);
+  console.log(`fullName from refetch: ${fullName}`);
+  console.log(`userType from refetch: ${userType}`);
   const { data } = useStopRequestsQuery({
     isDriver: true,
     studentId: userId,
@@ -35,10 +47,11 @@ export const Account = ({ navigation }) => {
   }
 
   const Logout = async () => {
+    console.log("logging out");
     try {
       await client.delete("/logout");
     } catch (error) {
-      console.error(error);
+      console.error({ message: "logout error", error });
     }
     await AsyncStorage.removeItem("authentication");
     signOut();
@@ -55,11 +68,11 @@ export const Account = ({ navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <ImageBackground
-        source={require("../../assets/background.jpg")}
+        source={require("../../assets/header.png")}
         style={{
           flex: 1,
-          width: null,
-          height: 250,
+          width: "100%",
+          height: 280,
           borderRadius: 10,
           marginBottom: 100,
         }}
@@ -75,13 +88,14 @@ export const Account = ({ navigation }) => {
               marginTop: 300,
             }}
           >
-            <UserAvatar
+            {/* <UserAvatar
               size={160}
               name={`${fullName}`}
               component={
                 image ? (
                   <Image
                     source={{ uri: image }}
+                    // source={require("../../assets/bus.png")}
                     style={{
                       width: 160,
                       height: 160,
@@ -90,14 +104,30 @@ export const Account = ({ navigation }) => {
                   />
                 ) : undefined
               }
+            /> */}
+            <UserAvatar
+              size={160}
+              name={`${fullName}`}
+              component={
+                <Image
+                  // source={{ uri: image }}
+                  source={imgsrc}
+                  style={{
+                    width: 200,
+                    height: 210,
+                    borderRadius: 300,
+                    marginTop: "-10%",
+                  }}
+                />
+              }
             />
           </View>
 
           <Text style={styles.nameTitle}>{fullName}</Text>
           <Pressable style={styles.editProfile}>
             <View>
-              <TouchableOpacity onPress={() => EditProfile()}>
-                <Text style={{ fontSize: 16, color: "#7D7BFF" }}>
+              <TouchableOpacity width="100%" onPress={() => EditProfile()}>
+                <Text style={{ fontSize: 16, color: "#43bfff" }}>
                   Edit Profile
                 </Text>
               </TouchableOpacity>
@@ -106,13 +136,6 @@ export const Account = ({ navigation }) => {
         </View>
       </ImageBackground>
       <ScrollView style={styles.mainDiv}>
-        <View>
-          <View style={styles.drawLine} />
-          <View style={styles.optionsObject}>
-            <Text style={styles.options}>Privacy Settings</Text>
-            <Icon style={styles.icons} name="settings-outline" size={24} />
-          </View>
-        </View>
         <View>
           <View style={styles.drawLine} />
           <View>
@@ -125,17 +148,8 @@ export const Account = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View>
-          <View style={styles.drawLine} />
-          <TouchableOpacity
-            style={styles.optionsObject}
-            onPress={() => navigation.push("Car Details")}
-          >
-            <Text style={styles.options}>Car Details</Text>
-            <Icon style={styles.icons} name="car" size={24} />
-          </TouchableOpacity>
-        </View>
-        <View>
+
+        {/* <View>
           <View style={styles.drawLine} />
           <TouchableOpacity
             style={styles.optionsObject}
@@ -152,7 +166,7 @@ export const Account = ({ navigation }) => {
             )}
             <Icon style={styles.icons} name="list" size={24} />
           </TouchableOpacity>
-        </View>
+        </View> */}
         <View>
           <View style={styles.drawLine} />
           <TouchableOpacity
@@ -160,7 +174,7 @@ export const Account = ({ navigation }) => {
           >
             <View style={styles.optionsObject}>
               <Text style={styles.options}>Ride History</Text>
-              <Icon style={styles.icons} name="list" size={24} />
+              <Icon style={styles.icons} name="time" size={24} />
             </View>
           </TouchableOpacity>
         </View>
@@ -168,10 +182,10 @@ export const Account = ({ navigation }) => {
           <View style={styles.drawLine} />
           <TouchableOpacity onPress={() => navigateToInbox()}>
             <View style={styles.optionsObject}>
-              <Text style={styles.options}>Inbox</Text>
+              <Text style={styles.options}>Reserved Rides</Text>
               <MaterialCommunityIcons
                 style={styles.icons}
-                name="inbox"
+                name="bus"
                 size={24}
               />
             </View>
@@ -196,16 +210,19 @@ export const Account = ({ navigation }) => {
 const styles = StyleSheet.create({
   mainDiv: {
     flex: 1,
-    marginTop: 30,
+    marginTop: 20,
+    width: "100%",
   },
   editProfile: {
     fontSize: 28,
+    borderWidth: "100%",
     borderColor: "black",
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: 5,
+    marginVertical: 10,
     padding: 15,
-    paddingLeft: 30,
-    paddingRight: 30,
+    paddingLeft: 15,
+    paddingRight: 15,
     borderColor: "gray",
     marginBottom: 20,
   },
@@ -213,6 +230,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     margin: 20,
     fontWeight: "600",
+    color: "#43bddd",
   },
   options: {
     marginTop: 10,

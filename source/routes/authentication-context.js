@@ -11,4 +11,4 @@ export const AuthenticationContext = React.createContext({
   signIn: () => {},
   signOut: () => {},
 });
-console.log(AuthenticationContext);
+console.log(`context ${AuthenticationContext}`);
