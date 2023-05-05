@@ -31,6 +31,8 @@ import connectToWebSocket from "api/websocketConfig";
 import { useQueryClient } from "react-query";
 import { CarDetails } from "pages/home/CarDetails";
 import { EditCar } from "pages/home/EditCar";
+import { AdminLogin } from "pages/login/adminLogin";
+import { DriverLogin } from "pages/login/driverLogin";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -46,7 +48,6 @@ export const AppRouter = ({ route }) => {
     rideStatus: "PENDING",
   });
   const queryClient = useQueryClient();
-
   useEffect(() => {
     connectToWebSocket(userId, queryClient);
   }, []);
@@ -123,22 +124,23 @@ export const LoginNavigator = () => {
         value={{
           token: authentication?.token,
           userId: authentication?.userId,
-          firstName: authentication?.firstName,
-          lastName: authentication?.lastName,
+          userType: authentication?.userType,
+          fullName: authentication?.fullName,
           setAuthentication,
-          signIn: async (token, userId, firstName, lastName) => {
+          signIn: async (token, userId, userType, fullName) => {
             await AsyncStorage.setItem(
               "authentication",
               JSON.stringify({
                 token: token,
                 userId: userId,
+                userType,
                 fullName: fullName,
                 // firstName: firstName,
                 // lastName: lastName,
               })
             );
-            setAuthentication({ token, userId, fullName });
-            console.log("fullName", fullName);
+            console.log(authentication);
+            setAuthentication({ token, userId, userType, fullName });
           },
           signOut: () => setAuthentication(null),
         }}
@@ -151,6 +153,8 @@ export const LoginNavigator = () => {
         >
           <Stack.Screen name="Start" component={Start} />
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="AdminLogin" component={AdminLogin} />
+          <Stack.Screen name="DriverLogin" component={DriverLogin} />
           <Stack.Screen name="IDScanner" component={IDScanner} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="ResetPassword" component={ResetPassword} />

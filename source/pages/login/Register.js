@@ -30,11 +30,13 @@ export const Register = ({ route, navigation }) => {
   const [fullName, setFullName] = useState({ value: "", error: "" });
   const [email, setEmail] = useState({ value: "", error: "" });
   const [phoneNumber, setPhoneNumber] = useState({ value: "" });
-  // const [birthDate, setBirthDate] = useState(new Date("2000-01-01"));
   const [password, setPassword] = useState({ value: "", error: "" });
+  const [userType, setUserType] = useState({ value: "", error: "" });
+  // const [birthDate, setBirthDate] = useState(new Date("2000-01-01"));
+  // const [campus, setCampus] = useState({ value: "", label: "" });
+  // const [universities, setUniversities] = useState([]);
   // const [university, setUniversity] = useState({ value: "", label: "" });
-  const [campus, setCampus] = useState({ value: "", label: "" });
-  const [universities, setUniversities] = useState([]);
+
   // const [campuses, setCampuses] = useState([]);
   // const [Focus, setFocus] = useState(false);
   // const [CampusFocus, setCampusFocus] = useState(false);
@@ -91,12 +93,13 @@ export const Register = ({ route, navigation }) => {
   //   }
   // }, [JSON.stringify(campusQ)]);
   useEffect(() => {
+    console.log(registered);
     if (registered) {
       signIn(
         registered.accessToken,
         registered.userId,
+        userType.value,
         fullName.value
-
         // firstName.value,
         // lastName.value
       );
@@ -107,7 +110,6 @@ export const Register = ({ route, navigation }) => {
   }, [registered]);
 
   const RegisterClicked = async () => {
-    console.log("clicked");
     // const firstnameError = nameValidator(firstName.value);
     // const lastnameError = nameValidator(lastName.value);
     const fullNameError = nameValidator(fullName.value);
@@ -134,6 +136,7 @@ export const Register = ({ route, navigation }) => {
       return;
     } else {
       setStudentID({ value: barcodeData, error: "" });
+      setUserType({ value: "student", error: "" });
     }
 
     // if (!campus.value) {

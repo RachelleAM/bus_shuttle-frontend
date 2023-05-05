@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "MyReactNative",
+    "name": "BusShuttleApp",
     "slug": "MyReactNative",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
@@ -9,5 +9,5 @@
       "softwareKeyboardLayoutMode": "pan"
     }
   },
-  "name": "MyReactNative"
+  "name": "BusShuttleApp"
 }

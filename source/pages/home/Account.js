@@ -19,7 +19,7 @@ import { useStopRequestsQuery, useUserPhotoQuery } from "api/queries";
 import UserAvatar from "react-native-user-avatar";
 
 export const Account = ({ navigation }) => {
-  const { userId, signOut, firstName, lastName } = useContext(
+  const { userId, signOut, fullName, userType } = useContext(
     AuthenticationContext
   );
   const { data } = useStopRequestsQuery({
@@ -77,7 +77,7 @@ export const Account = ({ navigation }) => {
           >
             <UserAvatar
               size={160}
-              name={`${firstName} ${lastName}`}
+              name={`${fullName}`}
               component={
                 image ? (
                   <Image
@@ -93,9 +93,7 @@ export const Account = ({ navigation }) => {
             />
           </View>
 
-          <Text style={styles.nameTitle}>
-            {firstName} {lastName}
-          </Text>
+          <Text style={styles.nameTitle}>{fullName}</Text>
           <Pressable style={styles.editProfile}>
             <View>
               <TouchableOpacity onPress={() => EditProfile()}>
