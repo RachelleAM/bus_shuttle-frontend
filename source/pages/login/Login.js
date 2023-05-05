@@ -21,7 +21,6 @@ export const Login = ({ navigation }) => {
   const { mutate: LoginUser, data: loggedin } = useLoginUserMutation();
 
   const { signIn } = useContext(AuthenticationContext);
-
   useEffect(() => {
     if (loggedin) {
       signIn(
@@ -32,7 +31,10 @@ export const Login = ({ navigation }) => {
         // loggedin.firstName,
         // loggedin.lastName
       );
-      navigation.navigate("Home", { loggedInId: loggedin.userId });
+      navigation.navigate("Home", {
+        loggedInId: loggedin.userId,
+        loggedInName: loggedin.fullName,
+      });
     }
   }, [loggedin]);
   console.log("loggedin", loggedin);

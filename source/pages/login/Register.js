@@ -50,7 +50,6 @@ export const Register = ({ route, navigation }) => {
   const { mutate: createUser, data: registered } = useCreateUserMutation();
 
   const { signIn } = useContext(AuthenticationContext);
-  console.log(barcodeData);
   // useEffect(() => {
   //   if (uniQ) {
   //     setUniversities(uniQ?.map((uni) => ({ value: uni.ID, label: uni.name })));
@@ -145,7 +144,7 @@ export const Register = ({ route, navigation }) => {
     // }
 
     const newUser = {
-      studentID: studentID.value,
+      studentID: parseInt(studentID.value),
       studentName: fullName.value,
       studentEmail: email.value,
       studentPhoneNumber: phoneNumber.value,
@@ -153,6 +152,9 @@ export const Register = ({ route, navigation }) => {
       // campusid: campus.value,
       studentPassword: password.value,
     };
+    console.log(
+      `student id: ${studentID.value} type: ${typeof studentID.value}`
+    );
     console.log(newUser);
 
     createUser(newUser);
